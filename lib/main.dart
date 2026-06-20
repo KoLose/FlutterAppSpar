@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sparapp/Authentication/check_page.dart';
 import 'package:sparapp/Authentication/login_page.dart';
 import 'package:sparapp/Authentication/register_page.dart';
@@ -6,15 +10,17 @@ import 'package:sparapp/Authentication/register_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
-  // await Supabase.initialize(
-  //   url: 'https://jdexyacedtkwroglzawr.supabase.co',
-  //   anonKey: 'sb_publishable_5lAeJexDWhGRe4b_4jEtTg_wZ-lc8Eq',
-  // );
+
+  await dotenv.load(fileName: "secret.env");
+
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_KEY']!,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  
   const MyApp({super.key});
 
   @override
@@ -26,8 +32,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => CheckPage(),
-        '/login':(context) => LoginPage(),
-        '/register': (context) => RegisterPage()
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
       },
     );
   }

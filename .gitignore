@@ -45,6 +45,5 @@ app.*.map.json
 /android/app/release
 
 # Secrets and keys
-secret.json
-.env
+secret.env
 *.key

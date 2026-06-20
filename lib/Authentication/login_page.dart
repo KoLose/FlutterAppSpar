@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sparapp/Database/authentication.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,6 +10,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  AuthenticationService authenticationService = AuthenticationService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
                 'images/logo.png',
                 fit: BoxFit.contain,
                 height: MediaQuery.of(context).size.height * 0.3,
-                width: MediaQuery.of(context).size.width * 0.45,
+                width: MediaQuery.of(context).size.width * 0.5,
               ),
 
               // Login
@@ -80,28 +86,90 @@ class _LoginPageState extends State<LoginPage> {
 
               // Login button
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.6,
+                width: MediaQuery.of(context).size.width * 0.65,
                 height: MediaQuery.of(context).size.height * 0.06,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: WidgetStatePropertyAll(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(10),
+                        borderRadius: BorderRadiusGeometry.circular(20),
                       ),
                     ),
-                    backgroundColor: WidgetStatePropertyAll(Colors.green),
+                    backgroundColor: WidgetStatePropertyAll(
+                      const Color.fromARGB(255, 21, 121, 70),
+                    ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (emailController.text.isNotEmpty &&
+                        passController.text.isNotEmpty) {
+                      var user = await authenticationService.singIn(
+                        emailController.text,
+                        passController.text,
+                      );
+                      if (user != null) {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('isLoggedIn', true);
+                        Navigator.popAndPushNamed(context, '/');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("User not found"),
+                            backgroundColor: Colors.black,
+                          ),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Write rows!"),
+                          backgroundColor: Colors.black,
+                        ),
+                      );
+                    }
+                  },
                   child: Text(
                     'Login',
                     style: TextStyle(
+                      fontSize: 16,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
+
               // Кнопка перейти на страницу регистрации
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('No account?'),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, '/register');
+                    },
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 0, 141, 5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+
+              // Copyright info
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.65,
+                height: MediaQuery.of(context).size.height * 0.06,
+                child: Center(
+                  child: Text(
+                    '© KoLose 2026',
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

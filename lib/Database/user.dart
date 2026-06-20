@@ -1,9 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LocalUser{
+class CurrentUser{
   String? id;
   
-  LocalUser.fromSupabase(User user){
+  CurrentUser.fromSupabase(User user){
     id = user.id;
   }
 }
