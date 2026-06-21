@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("User not found"),
-                            backgroundColor: Colors.black,
+                            backgroundColor: Colors.green,
                           ),
                         );
                       }
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Write rows!"),
-                          backgroundColor: Colors.black,
+                          backgroundColor: Colors.green,
                         ),
                       );
                     }
@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              // Кнопка перейти на страницу регистрации
+              // Register button
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -157,7 +157,25 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
 
-              SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+              // Recovery password button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, '/recovery');
+                    },
+                    child: Text(
+                      'Recovery password',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 0, 141, 5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.26),
 
               // Copyright info
               SizedBox(

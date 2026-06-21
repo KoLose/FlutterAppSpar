@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sparapp/Authentication/check_page.dart';
 import 'package:sparapp/Authentication/login_page.dart';
+import 'package:sparapp/Authentication/recovery_password_page.dart';
 import 'package:sparapp/Authentication/register_page.dart';
+import 'package:sparapp/Pages/profile_page.dart';
 // ignore: unused_import
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -31,9 +33,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
+        // '/': (context) => CheckPage(),
         '/': (context) => CheckPage(),
         '/login': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
+        '/recovery':(context) => RecoveryPasswordPage(),
       },
     );
   }

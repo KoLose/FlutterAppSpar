@@ -4,7 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthenticationService {
   final Supabase supabase = Supabase.instance;
 
-    Future<CurrentUser?> singIn(String email, String password) async{
+  Future<CurrentUser?> singIn(String email, String password) async {
     try {
       AuthResponse userGet = await supabase.client.auth.signInWithPassword(
         password: password,
@@ -12,13 +12,12 @@ class AuthenticationService {
       );
       User user = userGet.user!;
       return CurrentUser.fromSupabase(user);
-    }
-    catch(e){
+    } catch (e) {
       return null;
     }
   }
 
-    Future<CurrentUser?> singUp(String email, String password) async{
+  Future<CurrentUser?> singUp(String email, String password) async {
     try {
       AuthResponse userGet = await supabase.client.auth.signUp(
         password: password,
@@ -26,8 +25,23 @@ class AuthenticationService {
       );
       User user = userGet.user!;
       return CurrentUser.fromSupabase(user);
+    } catch (e) {
+      return null;
     }
-    catch(e){
+  }
+
+  Future logOut() async {
+    try {
+      await supabase.client.auth.signOut();
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<CurrentUser?> getCode(String email) async {
+    try {
+      await supabase.client.auth.resetPasswordForEmail(email);
+    } catch (e) {
       return null;
     }
   }
